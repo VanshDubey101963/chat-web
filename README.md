@@ -12,3 +12,4 @@ Currently, two official plugins are available:
 
 - npm init
 - npm install socket.io-client
+- npm install @mui/material @emotion/react @emotion/styled
