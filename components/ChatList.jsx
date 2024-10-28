@@ -1,10 +1,11 @@
 import React from "react";
-import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Box, Avatar, Stack } from "@mui/material";
+import { Box, Avatar, Stack , List } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import {FormControl , OutlinedInput , InputAdornment, Button , IconButton} from "@mui/material";
+import { MagnifyingGlass , ArchiveBox , List as List1 } from "phosphor-react";
 
 const ChatList = (props) => {
 
@@ -18,8 +19,8 @@ const ChatList = (props) => {
     <Box 
       sx={{
         backgroundColor: '#F8F9FF',
-        height: "95vh",
-        width: 360,
+        height: "93vh",
+        width: 350,
         borderRadius: 1.5,
         outline: "none",
         padding: 3,
@@ -27,6 +28,27 @@ const ChatList = (props) => {
     >
       <Stack spacing={2}>
       <h1>Chats</h1>
+
+      <OutlinedInput
+            sx={{borderRadius: 3.5 , height: 45, backgroundColor: '#E6EFFC' , '& .MuiOutlinedInput-notchedOutline': {
+          border: 'none', 
+        },
+        '& .MuiOutlinedInput-input::placeholder': {
+          color: '#0472F4', 
+          opacity: 0.75,
+        },
+        }}
+            placeholder="Search"
+            id="outlined-adornment-weight"
+            startAdornment={<InputAdornment position="start"><MagnifyingGlass size={20} color="#0472F4"/></InputAdornment>}
+            endAdornment={<InputAdornment position="end"><IconButton><List1 size={20} color="black" opacity={0.75} /></IconButton></InputAdornment>}
+            inputProps={{
+              'aria-label': 'weight',
+            }}/>
+  
+      <Button variant="text" sx={{p:0.5 , width: 'fit-content' ,textTransform: 'none', paddingLeft: 2}}  startIcon={<ArchiveBox color="black" />}>
+            Archived
+      </Button>
       <Divider component={"h1"} />
       <List>
         {ChatData.map((el) => (
