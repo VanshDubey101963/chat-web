@@ -1,11 +1,10 @@
-import React from 'react'
 import { ChatCircleDots , UsersThree , Phone , Gear , SunDim} from 'phosphor-react';
 import { Box , Stack , Avatar , IconButton , Divider} from '@mui/material';
 import { faker } from '@faker-js/faker';
 
 const Navbar = () => {
-    
-    
+
+  
     const NavbarIcons = [
     {
      index : 0 ,
