@@ -24,7 +24,7 @@ const Navbar = () => {
   
 
   return (
-    <Box p={2} sx={{backgroundColor: '#EEF3FA' ,height: "95vh",boxShadow: "0px 0px 2px rgba(0,0,0,0.25)" ,width: 60, borderRadius: 1.5}}>
+    <Box p={2} sx={{backgroundColor: '#EEF3FA' ,boxShadow: "0px 0px 2px rgba(0,0,0,0.25)" ,width: 60, borderRadius: 1.5}}>
           <Stack direction={'column'} height={'100%'} alignItems={'center'} justifyContent={'space-between'} >
                 <Stack gap={3}>
                     <Avatar alt='' src='src/assets/app-icon.png' sx={{p:1, backgroundColor: '#0572F4'}} />

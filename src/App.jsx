@@ -1,21 +1,24 @@
-// import { useTheme } from '@mui/material/styles';
-// import { Stack } from '@mui/material';
-// import { ChatList } from './components/ChatList';
-// import Navbar from './components/Navbar';
+import { useTheme } from '@mui/material/styles';
+import { Divider, Stack } from '@mui/material';
+import { ChatList } from './components/ChatList';
+import Navbar from './components/Navbar';
 import Login from './components/Login';
+import ChatBox from './components/ChatBox';
 
 
 function App() {
 
-  // const theme = useTheme() 
+  const theme = useTheme() 
   
   return (
     <>
-    {/* <Stack direction={'row'} m={1} gap={0.1}>
+    <Stack direction={'row'} height={'98vh'} width={'100vw'} gap={0.1}>
         <Navbar/>
         <ChatList theme={theme}/>
-      </Stack> */}
-      <Login/>
+        <Divider sx={{bgcolor: '#767B82'}} />
+        <ChatBox/>
+      </Stack>
+      {/* <Login/> */}
     </>
   )
 }
