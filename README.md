@@ -11,8 +11,4 @@ Currently, two official plugins are available:
 # Initial setups
 
 - npm init
-- npm install socket.io-client
-- npm install @mui/material @emotion/react @emotion/styled
-- npm install phosphor-react
-- npm install @faker-js/faker
-- npm install @fontsource/roboto
+- npm install 
