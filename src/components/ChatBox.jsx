@@ -105,6 +105,7 @@ const ChatBox = () => {
       <Box
         sx={{
           height: "95vh",
+          width: "100%",
           backgroundColor: "#F8F9FF",
           position: "relative",
         }}

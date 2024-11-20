@@ -2,15 +2,14 @@ import React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Box, Avatar, Stack, List } from "@mui/material";
+import { Box, Avatar, Stack, List , IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import {
   OutlinedInput,
   InputAdornment,
   Button,
-  IconButton,
 } from "@mui/material";
-import { MagnifyingGlass, ArchiveBox, List as List1 } from "phosphor-react";
+import { MagnifyingGlass, ArchiveBox, FinnTheHuman ,List as List1 } from "phosphor-react";
 
 const ChatList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState();
@@ -30,7 +29,10 @@ const ChatList = () => {
       }}
     >
       <Stack spacing={2}>
-        <h1>Chats</h1>
+        <Stack justifyContent={"space-between"} direction={"row"}>
+          <h1>Chats</h1>
+          <IconButton><FinnTheHuman/></IconButton>
+        </Stack>
 
         <OutlinedInput
           sx={{
