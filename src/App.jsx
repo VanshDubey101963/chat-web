@@ -12,13 +12,13 @@ function App() {
   
   return (
     <>
-    <Stack direction={'row'} height={'98vh'} width={'98vw'} gap={0.1}>
+    {/* <Stack direction={'row'} height={'98vh'} width={'98vw'} gap={0.1}>
         <Navbar/>
         <ChatList theme={theme}/>
         <Divider sx={{bgcolor: '#767B82'}} />
         <ChatBox/>
-      </Stack>
-      {/* <Login/> */}
+      </Stack> */}
+      <Login/>
     </>
   )
 }
