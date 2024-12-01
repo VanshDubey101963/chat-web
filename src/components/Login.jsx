@@ -9,6 +9,7 @@ import {
 } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import {registerUser} from "../../api/userApi"
 
 const Login = () => {
   const [showSignup, setShowSignup] = useState(false);
@@ -94,7 +95,7 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const isRegistered = registerUser(data);
   };
 
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility

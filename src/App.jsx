@@ -7,7 +7,6 @@ import ChatBox from "./components/ChatBox";
 
 function App() {
   const theme = useTheme();
-
   return (
     <>
       <Login />
