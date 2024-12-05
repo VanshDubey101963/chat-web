@@ -11,4 +11,5 @@ Currently, two official plugins are available:
 # Initial setups
 
 - npm init
-- npm install 
+- npm install
+- configure .env file with VITE_SERVER_URL 
