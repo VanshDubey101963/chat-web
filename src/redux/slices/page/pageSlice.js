@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    currPage: 'signup',
+    currPage: 'signin',
 }
 
 export const pageSlice = createSlice({
