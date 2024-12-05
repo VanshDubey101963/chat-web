@@ -132,7 +132,7 @@ const ChatBox = () => {
               width: "100%",
               display: "flex",
               alignItems: "center",
-              paddingRight: 2
+              paddingRight: 2,
             }}
           >
             <IconButton>
@@ -149,7 +149,7 @@ const ChatBox = () => {
                 backgroundColor: "#E6EFFC",
                 width: "93%",
                 flex: 1,
-                lineHeight: "31px"
+                lineHeight: "31px",
               }}
             ></textarea>
             <IconButton>

@@ -2,14 +2,15 @@ import React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Box, Avatar, Stack, List , IconButton } from "@mui/material";
+import { Box, Avatar, Stack, List, IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import { OutlinedInput, InputAdornment, Button } from "@mui/material";
 import {
-  OutlinedInput,
-  InputAdornment,
-  Button,
-} from "@mui/material";
-import { MagnifyingGlass, ArchiveBox, FinnTheHuman ,List as List1 } from "phosphor-react";
+  MagnifyingGlass,
+  ArchiveBox,
+  FinnTheHuman,
+  List as List1,
+} from "phosphor-react";
 
 const ChatList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState();
@@ -31,7 +32,9 @@ const ChatList = () => {
       <Stack spacing={2}>
         <Stack justifyContent={"space-between"} direction={"row"}>
           <h1>Chats</h1>
-          <IconButton><FinnTheHuman/></IconButton>
+          <IconButton>
+            <FinnTheHuman />
+          </IconButton>
         </Stack>
 
         <OutlinedInput
@@ -118,8 +121,8 @@ const Chats = (props) => {
         "&:hover": {
           backgroundColor: "#B0C9FF",
           "& .MuiListItemText-primary, & .MuiListItemText-secondary": {
-          color: "white",
-          }, 
+            color: "white",
+          },
         },
         color: selectedIndex === index ? "white" : "black",
       }}
@@ -138,9 +141,7 @@ const Chats = (props) => {
           "& .MuiListItemText-secondary": {
             color: selectedIndex === index ? "white" : "black",
             fontSize: 12,
-            
           },
-
         }}
       />
     </ListItemButton>

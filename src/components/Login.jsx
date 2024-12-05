@@ -9,105 +9,130 @@ import {
 } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import {registerUser} from "../../api/userApi"
+import { registerUser } from "../api/userApi";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../redux/slices/page/pageSlice";
+import { toastError, toastInfo, toastSuccess } from "../toasts/toast";
 
 const Login = () => {
-  const [showSignup, setShowSignup] = useState(false);
+  const page = useSelector((state) => state.page.currPage);
+  const dispatch = useDispatch();
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        backgroundColor: "#E2E8F0",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        gap: 10,
-      }}
-    >
+    <>
       <div
         style={{
-          backgroundColor: "#FDFDFE",
-          height: "40%",
-          width: "30%",
-          borderRadius: 5,
+          height: "100vh",
+          backgroundColor: "#E2E8F0",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: 10,
         }}
       >
-        <Stack
-          direction={"column"}
-          alignItems={"center"}
-          sx={{ width: "100%", height: "100%", padding: 2 }}
+        <ToastContainer />
+
+        <div
+          style={{
+            backgroundColor: "#FDFDFE",
+            height: "40%",
+            width: "30%",
+            borderRadius: 5,
+          }}
         >
           <Stack
             direction={"column"}
             alignItems={"center"}
-            justifyContent={"center"}
+            sx={{ width: "100%", height: "100%", padding: 2 }}
           >
-            <UserCircle size={50} color="blue" />
-            <h1>Welcome</h1>
+            <Stack
+              direction={"column"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <UserCircle size={50} color="blue" />
+              <h1>Welcome</h1>
+            </Stack>
+
+            {page == "signup" && <SignUp />}
+
+            {page == "signin" && <SignIn />}
           </Stack>
+        </div>
 
-          {showSignup && <SignUp />}
+        {page == "signin" && (
+          <Stack direction={"row"} gap={1}>
+            <p>Don't have an account?</p>
+            <p
+              onClick={() => dispatch(setPage("signup"))}
+              style={{
+                color: "blue",
+                cursor: "pointer",
+              }}
+            >
+              Sign up
+            </p>
+          </Stack>
+        )}
 
-          {!showSignup && <SignIn />}
-        </Stack>
+        {page == "signup" && (
+          <Stack direction={"row"} gap={1}>
+            <p>Already have an account?</p>
+            <p
+              onClick={() => dispatch(setPage("signin"))}
+              style={{
+                color: "blue",
+                cursor: "pointer",
+              }}
+            >
+              Sign in
+            </p>
+          </Stack>
+        )}
       </div>
-
-      {!showSignup && (
-        <Stack direction={"row"} gap={1}>
-          <p>Don't have an account?</p>
-          <p
-            onClick={() => setShowSignup(true)}
-            style={{
-              color: "blue",
-              cursor: "pointer",
-            }}
-          >
-            Sign up
-          </p>
-        </Stack>
-      )}
-
-      {showSignup && (
-        <Stack direction={"row"} gap={1}>
-          <p>Already have an account?</p>
-          <p
-            onClick={() => setShowSignup(false)}
-            style={{
-              color: "blue",
-              cursor: "pointer",
-            }}
-          >
-            Sign in
-          </p>
-        </Stack>
-      )}
-    </div>
+    </>
   );
 };
 
 const SignUp = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const dispatch = useDispatch();
+
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    const isRegistered = registerUser(data);
+    const Registered = registerUser(data);
+
+    if (Registered.ok) {
+      toastSuccess(Registered.message);
+      dispatch(setPage("signin"));
+    } else {
+      toastError(Registered.message);
+    }
   };
 
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const onError = (errors) => {
+    if (errors.password?.type == "required")
+      toastInfo("Please enter your password to continue");
 
-  // Function to toggle password visibility
+    if (errors.email?.type == "required")
+      toastInfo("Please enter your email to continue");
+
+    if (errors.username?.type == "required")
+      toastInfo("Please enter your username to continue");
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -139,12 +164,6 @@ const SignUp = () => {
           }}
         />
       </div>
-      {errors.username?.type == "required" && (
-        <span style={{ color: "red", fontSize: 12 }}>
-          {" "}
-          Username is required{" "}
-        </span>
-      )}
 
       <div style={{ position: "relative" }}>
         <Envelope
@@ -171,9 +190,6 @@ const SignUp = () => {
           }}
         />
       </div>
-      {errors.email?.type == "required" && (
-        <span style={{ color: "red", fontSize: 12 }}> Email is required </span>
-      )}
 
       <div style={{ position: "relative" }}>
         <Lock
@@ -189,7 +205,7 @@ const SignUp = () => {
         />
 
         <input
-          type={showPassword ? "text" : "password"} // Toggle between text and password
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           {...register("password", { required: true })}
           style={{
@@ -218,20 +234,17 @@ const SignUp = () => {
           )}
         </div>
       </div>
-      {errors.password?.type == "required" && (
-        <span style={{ color: "red", fontSize: 12 }}>Password is required</span>
-      )}
       <button
         type="submit"
         style={{
-          backgroundColor: "#007bff", // Blue color for background
-          color: "white", // White text color
-          border: "none", // No border
-          padding: "12px 20px", // Padding for height and width
-          borderRadius: "5px", // Rounded corners
-          fontSize: "16px", // Font size
-          cursor: "pointer", // Pointer cursor on hover
-          transition: "background-color 0.3s", // Smooth transition for background color on hover
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          padding: "12px 20px",
+          borderRadius: "5px",
+          fontSize: "16px",
+          cursor: "pointer",
+          transition: "background-color 0.3s",
         }}
       >
         Sign up
@@ -251,16 +264,23 @@ const SignIn = () => {
     console.log(data);
   };
 
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const onError = (errors) => {
+    if (errors.password?.type == "required")
+      toastInfo("Please enter your password to continue");
 
-  // Function to toggle password visibility
+    if (errors.username?.type == "required")
+      toastInfo("Please enter your username to continue");
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -292,12 +312,6 @@ const SignIn = () => {
           }}
         />
       </div>
-      {errors.username?.type == "required" && (
-        <span style={{ color: "red", fontSize: 12 }}>
-          {" "}
-          Username is required{" "}
-        </span>
-      )}
 
       <div style={{ position: "relative" }}>
         <Lock
@@ -313,7 +327,7 @@ const SignIn = () => {
         />
 
         <input
-          type={showPassword ? "text" : "password"} // Toggle between text and password
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           {...register("password", { required: true })}
           style={{
@@ -342,20 +356,18 @@ const SignIn = () => {
           )}
         </div>
       </div>
-      {errors.password?.type == "required" && (
-        <span style={{ color: "red", fontSize: 12 }}>Password is required</span>
-      )}
+
       <button
         type="submit"
         style={{
-          backgroundColor: "#007bff", // Blue color for background
-          color: "white", // White text color
-          border: "none", // No border
-          padding: "12px 20px", // Padding for height and width
-          borderRadius: "5px", // Rounded corners
-          fontSize: "16px", // Font size
-          cursor: "pointer", // Pointer cursor on hover
-          transition: "background-color 0.3s", // Smooth transition for background color on hover
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          padding: "12px 20px",
+          borderRadius: "5px",
+          fontSize: "16px",
+          cursor: "pointer",
+          transition: "background-color 0.3s",
         }}
       >
         Sign In
