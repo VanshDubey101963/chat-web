@@ -181,4 +181,4 @@ const ChatData = [
   },
 ];
 
-export { ChatList };
+export default ChatList;
