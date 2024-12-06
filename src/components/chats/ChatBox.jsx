@@ -61,7 +61,7 @@ const ChatBox = () => {
                 variant="dot"
               >
                 <Avatar
-                  src={faker.image.avatar}
+                  src={faker.image.avatar()}
                   alt="Avatar"
                   sx={{ width: 35, height: 35 }}
                 />

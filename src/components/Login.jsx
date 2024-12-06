@@ -9,7 +9,7 @@ import {
 } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { registerUser } from "../api/userApi";
+import { isUser, loginUser, registerUser } from "../api/userApi";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -102,8 +102,8 @@ const SignUp = () => {
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    const Registered = registerUser(data);
+  const onSubmit = async (data) => {
+    const Registered = await registerUser(data);
 
     if (Registered.ok) {
       toastSuccess(Registered.message);
@@ -260,8 +260,28 @@ const SignIn = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const dispatch = useDispatch();
+
+  const onSubmit = async (data) => {
+    const res = await loginUser(data);
+
+    if(res)
+    {
+      const data = await isUser();
+
+      if(data.ok)
+      {
+        dispatch(setPage('chat'))
+      }
+      else
+      {
+        toastError('Try Login Again')
+      }
+    }
+    else 
+    {
+      toastError("Invalid Email or Password!")
+    }
   };
 
   const onError = (errors) => {

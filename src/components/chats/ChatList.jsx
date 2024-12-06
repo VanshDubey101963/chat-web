@@ -12,6 +12,8 @@ import {
   List as List1,
 } from "phosphor-react";
 
+
+
 const ChatList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState();
 
@@ -148,6 +150,7 @@ const Chats = (props) => {
   );
 };
 
+
 const ChatData = [
   {
     index: 0,
@@ -180,5 +183,6 @@ const ChatData = [
     about: "A leap of faith",
   },
 ];
+
 
 export default ChatList;
