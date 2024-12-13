@@ -18,10 +18,13 @@ function App() {
       {
         dispatch(setPage('chat'))
       }
+
+     console.log(user) 
   }
 
   useEffect(() => {
-    getPage();
+    const username = getPage();
+    
   }, []);
 
   switch (page) {

@@ -1,10 +1,11 @@
-import React from "react";
+import React , {useState} from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Avatar, Stack, List, IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { OutlinedInput, InputAdornment, Button } from "@mui/material";
+import FriendsDialog from "./dialogs/FriendsDialog";
 import {
   MagnifyingGlass,
   ArchiveBox,
@@ -15,6 +16,12 @@ import {
 
 
 const ChatList = () => {
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
+
   const [selectedIndex, setSelectedIndex] = React.useState();
 
   const handleListItemClick = (event, index) => {
@@ -34,10 +41,12 @@ const ChatList = () => {
       <Stack spacing={2}>
         <Stack justifyContent={"space-between"} direction={"row"}>
           <h1>Chats</h1>
-          <IconButton>
+          <IconButton onClick={handleOpenDialog}>
             <FinnTheHuman />
           </IconButton>
         </Stack>
+
+        <FriendsDialog open={openDialog} onClose={handleCloseDialog} />
 
         <OutlinedInput
           sx={{
