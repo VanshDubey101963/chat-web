@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,34 +11,33 @@ import {
   ListItemText,
   Button,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const FriendsDialog = ({ open, onClose }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [search, setSearch] = useState("");
+  
+  const [isLoading, setLoading] = useState(false);
+
+  const { friendRequests , users , username , email } = useSelector((state) => state.user)
 
   const handleTabChange = (event, newValue) => setTabIndex(newValue);
 
   const handleSearchChange = (event) => setSearch(event.target.value);
 
-  const exploreUsers = [
-    { id: 1, name: "JohnDoe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3 , name: "Bran smith"},
-    { id: 3 , name: "Bran smith"},
-    { id: 3 , name: "Bran smith"},
-    { id: 3 , name: "Bran smith"}
-  ];
-  const friendRequests = [
-    { id: 3, name: "Emily Johnson" },
-    { id: 4, name: "Michael Brown" },
-  ];
 
-  const filteredExploreUsers = exploreUsers.filter((user) =>
-    user.name.toLowerCase().includes(search.toLowerCase())
+  useEffect(()=> {
+    console.log(email)
+    
+  },[])
+ 
+  const filteredExploreUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
   );
   const filteredFriendRequests = friendRequests.filter((request) =>
     request.name.toLowerCase().includes(search.toLowerCase())
   );
+
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -56,19 +55,22 @@ const FriendsDialog = ({ open, onClose }) => {
           onChange={handleSearchChange}
         />
         {tabIndex === 0 && (
-          <List sx={{overflow: "auto" , maxHeight: 200}}>
+          <List
+            sx={{ overflow: "auto", maxHeight: 200 }}
+          >
             {filteredExploreUsers.map((user) => (
-              <ListItem key={user.id}>
-                <ListItemText primary={user.name} />
+              <ListItem key={user._id}>
+                <ListItemText primary={user.username} />
                 <Button variant="contained" color="primary">
                   Add Friend
                 </Button>
               </ListItem>
             ))}
+            {isLoading && <p>loading ....</p>}
           </List>
         )}
         {tabIndex === 1 && (
-          <List sx={{overflow: "auto", maxHeight: 200}}>
+          <List sx={{ overflow: "auto", maxHeight: 200 }}>
             {filteredFriendRequests.map((request) => (
               <ListItem key={request.id}>
                 <ListItemText primary={request.name} />

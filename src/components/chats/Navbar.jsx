@@ -4,6 +4,7 @@ import {
   Phone,
   Gear,
   SunDim,
+  SignOut
 } from "phosphor-react";
 import { Box, Stack, Avatar, IconButton, Divider } from "@mui/material";
 import { faker } from "@faker-js/faker";
@@ -25,6 +26,11 @@ const Navbar = () => {
       icon: <Phone />,
     },
   ];
+
+  const logoutUser = () => {
+      localStorage.removeItem('token');
+      window.location.reload()
+  }
 
   return (
     <Box
@@ -67,6 +73,9 @@ const Navbar = () => {
               src={faker.image.avatar()}
               sx={{ width: 25, height: 25 }}
             />
+          </IconButton>
+          <IconButton onClick={logoutUser} >
+            <SignOut />
           </IconButton>
         </Stack>
       </Stack>

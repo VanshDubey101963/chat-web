@@ -59,6 +59,8 @@ export const isUser = async () => {
 
     const token = localStorage.getItem('token');
 
+    if(!token) return;
+
     try {
         const response = await fetch(`${url}/signin/protectedData`,{
             method: 'GET',
@@ -71,7 +73,7 @@ export const isUser = async () => {
 
         return {
             ok: response.ok,
-            user: data.user
+            userID: data.userID
         };
 
     } catch (error) {

@@ -13,7 +13,7 @@ import { isUser, loginUser, registerUser } from "../api/userApi";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setPage } from "../redux/slices/page/pageSlice";
+import { setPage } from "../utils/redux/slices/page/pageSlice";
 import { toastError, toastInfo, toastSuccess } from "../toasts/toast";
 
 const Login = () => {
