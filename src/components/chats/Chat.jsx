@@ -9,13 +9,11 @@ import { useEffect } from "react";
 const Chat = ({ theme ,  userID }) => {
 
   const dispatch = useDispatch()
-  const { usersStatus , requestsStatus , currentUserStatus } = useSelector((state) => state.user)
 
   useEffect(() => {
        dispatch(fetchUsers(userID))
        dispatch(fetchFriendRequests(userID))
-       dispatch(fetchCurrentUser(userID))
-       console.log(userID) 
+       dispatch(fetchCurrentUser(userID)) 
   }, []);
 
 

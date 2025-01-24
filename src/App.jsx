@@ -7,12 +7,11 @@ import { isUser } from "./api/userApi";
 import { useEffect, useState } from "react";
 import { setPage } from "./utils/redux/slices/page/pageSlice";
 import { setCurrentUserID } from "./utils/redux/slices/user/userSlice";
-import {createConnection} from './utils/sockets/socket'
+import { SocketProvider } from "./utils/sockets/socket"
 
 function App() {
   const theme = useTheme();
   const page = useSelector((state) => state.page.currPage);
-  const [socket , setSocket] = useState(null);
   const dispatch = useDispatch();
   const userID = useSelector((state) => state.user.userID)
 
@@ -30,7 +29,11 @@ function App() {
 
   switch (page) {
     case "chat":
-      return <Chat theme={theme} userID={userID} />;
+      return ( 
+        <SocketProvider userID={userID} >
+            <Chat theme={theme} userID={userID} />
+        </SocketProvider>
+    );
     default:
       return <Login />;
   }

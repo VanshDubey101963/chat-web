@@ -19,7 +19,6 @@ const initialState = {
 
 export const fetchCurrentUser = createAsyncThunk('users/fetchCurrentUser',
     async (userID, thunkAPI) => {
-        console.log('thunk used')
         try {
             const response = await fetch(`${url}/users/fetchCurrentUser`, {
                 method: 'GET',

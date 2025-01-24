@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -12,24 +12,16 @@ import {
   Button,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import { SocketContext } from "../../../utils/sockets/socket";
 
 const FriendsDialog = ({ open, onClose }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [search, setSearch] = useState("");
-  
   const [isLoading, setLoading] = useState(false);
-
-  const { friendRequests , users , username , email } = useSelector((state) => state.user)
-
+  const { friendRequests , users } = useSelector((state) => state.user)
   const handleTabChange = (event, newValue) => setTabIndex(newValue);
-
   const handleSearchChange = (event) => setSearch(event.target.value);
 
-
-  useEffect(()=> {
-    console.log(email)
-    
-  },[])
  
   const filteredExploreUsers = users.filter((user) =>
     user.username.toLowerCase().includes(search.toLowerCase())
