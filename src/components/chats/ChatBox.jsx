@@ -8,7 +8,6 @@ import {
   styled,
   Divider,
 } from "@mui/material";
-import { faker } from "@faker-js/faker";
 import {
   DotsThreeVertical,
   Paperclip,
@@ -16,6 +15,7 @@ import {
   Phone,
   VideoCamera,
 } from "phosphor-react";
+import { useSelector } from "react-redux";
 
 const OnlineBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -31,6 +31,8 @@ const OnlineBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const ChatBox = () => {
+  const { username, avatar, isOnline } = useSelector((state) => state.chat);
+
   return (
     <Stack direction={"column"} sx={{ width: "100%" }}>
       <Box
@@ -52,20 +54,30 @@ const ChatBox = () => {
                 alignItems: "center",
               }}
             >
-              <OnlineBadge
-                overlap="circular"
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                variant="dot"
-              >
+              {isOnline && (
+                <OnlineBadge
+                  overlap="circular"
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  variant="dot"
+                >
+                  <Avatar
+                    src={avatar}
+                    alt="Avatar"
+                    sx={{ width: 35, height: 35 }}
+                  />
+                </OnlineBadge>
+              )}
+
+              {!isOnline && (
                 <Avatar
-                  src={faker.image.avatar()}
+                  src={avatar}
                   alt="Avatar"
                   sx={{ width: 35, height: 35 }}
                 />
-              </OnlineBadge>
+              )}
             </div>
             <Box
               sx={{
@@ -76,14 +88,14 @@ const ChatBox = () => {
             >
               <Stack direction={"column"} gap={1 / 2}>
                 <Typography variant="body" component={"h4"}>
-                  Example Chat
+                  {username}
                 </Typography>
                 <Typography
                   variant="subtitle"
                   component={"h5"}
                   sx={{ color: "grey" }}
                 >
-                  Online
+                  {isOnline ? "Online" : ""}
                 </Typography>
               </Stack>
             </Box>

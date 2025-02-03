@@ -4,33 +4,60 @@ import {
   Phone,
   Gear,
   SunDim,
-  SignOut
+  SignOut,
 } from "phosphor-react";
 import { Box, Stack, Avatar, IconButton, Divider } from "@mui/material";
-import { faker } from "@faker-js/faker";
+import { useDispatch, useSelector } from "react-redux";
+import { setNavbarIndex } from "../../utils/redux/slices/page/pageSlice";
 
 const Navbar = () => {
+  const { avatar } = useSelector((state) => state.user);
+  const { navbarIndex } = useSelector((state) => state.page);
+  const dispatch = useDispatch();
+
   const NavbarIcons = [
     {
       index: 0,
-      icon: <ChatCircleDots />,
+      icon: (
+        <ChatCircleDots
+          height={25}
+          width={25}
+          color={navbarIndex == 0 ? "white" : "black"}
+        />
+      ),
     },
 
     {
       index: 1,
-      icon: <UsersThree />,
+      icon: (
+        <UsersThree
+          height={25}
+          width={25}
+          color={navbarIndex == 1 ? "white" : "black"}
+        />
+      ),
     },
 
     {
       index: 2,
-      icon: <Phone />,
+      icon: (
+        <Phone
+          height={25}
+          width={25}
+          color={navbarIndex == 2 ? "white" : "black"}
+        />
+      ),
     },
   ];
 
   const logoutUser = () => {
-      localStorage.removeItem('token');
-      window.location.reload()
-  }
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+
+  const handleNavbarIconsClick = (index) => () => {
+    dispatch(setNavbarIndex(index));
+  };
 
   return (
     <Box
@@ -48,14 +75,32 @@ const Navbar = () => {
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Stack gap={3}>
+        <Stack
+          gap={3}
+          sx={{
+            width: "100%",
+          }}
+        >
           <Avatar
             alt=""
             src="src/assets/app-icon.png"
-            sx={{ p: 1, backgroundColor: "#0572F4" }}
+            sx={{ backgroundColor: "#0572F4", p: 1 }}
           />
           {NavbarIcons.map((el) => (
-            <IconButton key={el.index}>{el.icon}</IconButton>
+            <button
+              key={el.index}
+              style={{
+                backgroundColor:
+                  navbarIndex == el.index ? "#0572F4" : "#EEF3FA",
+                width: "100%",
+                height: 50,
+                borderRadius: "10px",
+                border: "none",
+              }}
+              onClick={handleNavbarIconsClick(el.index)}
+            >
+              {el.icon}
+            </button>
           ))}
           <Divider variant="middle" flexItem />
           <IconButton>
@@ -68,13 +113,9 @@ const Navbar = () => {
             <SunDim />
           </IconButton>
           <IconButton>
-            <Avatar
-              alt=""
-              src={faker.image.avatar()}
-              sx={{ width: 25, height: 25 }}
-            />
+            <Avatar alt="" src={avatar} sx={{ width: 30, height: 30 }} />
           </IconButton>
-          <IconButton onClick={logoutUser} >
+          <IconButton onClick={logoutUser}>
             <SignOut />
           </IconButton>
         </Stack>

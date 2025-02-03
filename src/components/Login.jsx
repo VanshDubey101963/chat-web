@@ -14,7 +14,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../utils/redux/slices/page/pageSlice";
-import { toastError, toastInfo, toastSuccess } from "../toasts/toast";
+import { toastError, toastInfo, toastSuccess } from "../utils/toasts/toast";
 
 const Login = () => {
   const page = useSelector((state) => state.page.currPage);
@@ -265,22 +265,16 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     const res = await loginUser(data);
 
-    if(res)
-    {
+    if (res) {
       const data = await isUser();
 
-      if(data.ok)
-      {
-        dispatch(setPage('chat'))
+      if (data.ok) {
+        dispatch(setPage("chat"));
+      } else {
+        toastError("Try Login Again");
       }
-      else
-      {
-        toastError('Try Login Again')
-      }
-    }
-    else 
-    {
-      toastError("Invalid Email or Password!")
+    } else {
+      toastError("Invalid Email or Password!");
     }
   };
 

@@ -1,6 +1,5 @@
 const url = import.meta.env.VITE_SERVER_URL;
-import { toast, Bounce } from "react-toastify";
-import { toastError, toastSuccess } from "../toasts/toast";
+import { toastError } from "../utils/toasts/toast";
 
 export const registerUser = async (data) => {
 
@@ -14,7 +13,7 @@ export const registerUser = async (data) => {
                 user: data
             })
         })
-        
+
         const responseData = await response.json();
         return {
             ok: response.ok,
@@ -29,7 +28,7 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
 
     try {
-        const response = await fetch(`${url}/signin`,{
+        const response = await fetch(`${url}/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,8 +40,7 @@ export const loginUser = async (data) => {
 
         const responseData = await response.json();
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
             toastError(responseData.message);
             return false;
         }
@@ -51,7 +49,7 @@ export const loginUser = async (data) => {
         return true;
 
     } catch (error) {
-        
+
     }
 }
 
@@ -59,12 +57,12 @@ export const isUser = async () => {
 
     const token = localStorage.getItem('token');
 
-    if(!token) return;
+    if (!token) return;
 
     try {
-        const response = await fetch(`${url}/signin/protectedData`,{
+        const response = await fetch(`${url}/signin/protectedData`, {
             method: 'GET',
-            headers:{
+            headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
@@ -77,6 +75,6 @@ export const isUser = async () => {
         };
 
     } catch (error) {
-        
+
     }
 }

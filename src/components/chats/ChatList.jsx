@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,27 +12,32 @@ import {
   FinnTheHuman,
   List as List1,
 } from "phosphor-react";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { setChatNavbar } from "../../utils/redux/slices/chat/chatSlice";
+import { setChatIndex } from "../../utils/redux/slices/page/pageSlice";
 
 const ChatList = () => {
-
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
 
-  const [selectedIndex, setSelectedIndex] = React.useState();
+  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const dispatch = useDispatch();
 
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+  const handleListItemClick = (props) => {
+    setSelectedIndex(props.index);
+    dispatch(setChatNavbar({ ...props }));
+    dispatch(setChatIndex(props.index));
   };
+
+  const { friends } = useSelector((state) => state.user);
 
   return (
     <Box
       sx={{
         backgroundColor: "#F8F9FF",
-        width: 350,
+        width: "350px",
         borderRadius: 1.5,
         outline: "none",
         padding: 3,
@@ -94,15 +99,16 @@ const ChatList = () => {
         </Button>
         <Divider component={"h1"} />
         <List>
-          {ChatData.map((el) => (
+          {friends.map((el) => (
             <Chats
-              key={el.index}
-              name={el.name}
-              index={el.index}
-              iconSrc={el.iconSrc}
+              key={el._id}
+              name={el.username}
+              index={el._id}
+              iconSrc={el.avatar}
               selectedIndex={selectedIndex}
               onListItemClick={handleListItemClick}
-              about={el.about}
+              about={"A leap of faith"}
+              isOnline={el.isOnline}
             />
           ))}
         </List>
@@ -118,10 +124,18 @@ const Chats = (props) => {
   const about = props.about;
   const selectedIndex = props.selectedIndex;
   const onListItemClick = props.onListItemClick;
+  const isOnline = props.isOnline;
 
   return (
     <ListItemButton
-      onClick={(event) => onListItemClick(event, index)}
+      onClick={(event) =>
+        onListItemClick(event, {
+          username: name,
+          avatar: iconSrc,
+          isOnline: isOnline,
+          index: index,
+        })
+      }
       sx={{
         borderRadius: "5px",
         gap: 2,
@@ -139,7 +153,11 @@ const Chats = (props) => {
       }}
     >
       <ListItemIcon>
-        <Avatar alt="" src={iconSrc} sx={{ p: 1 }} />
+        <Avatar
+          alt="src/assets/man_4140048.png"
+          src={iconSrc}
+          sx={{ marginLeft: 1, borderRadius: "50%" }}
+        />
       </ListItemIcon>
       <ListItemText
         primary={name}
@@ -158,40 +176,5 @@ const Chats = (props) => {
     </ListItemButton>
   );
 };
-
-
-const ChatData = [
-  {
-    index: 0,
-    name: "Vansh Dubey",
-    iconSrc: "src/assets/man_4140048.png",
-    about: "Otaku in disguise",
-  },
-  {
-    index: 1,
-    name: "Viral Jain",
-    iconSrc: "src/assets/man_4140048.png",
-    about: "",
-  },
-  {
-    index: 2,
-    name: "Sanyam Bhandari",
-    iconSrc: "src/assets/man_4140048.png",
-    about: `for this road's mine, and mine alone..`,
-  },
-  {
-    index: 3,
-    name: "Samar Kumar Mandloi",
-    iconSrc: "src/assets/man_4140048.png",
-    about: "Samar Mandloi",
-  },
-  {
-    index: 4,
-    name: "Yug Shrivastava",
-    iconSrc: "src/assets/man_4140048.png",
-    about: "A leap of faith",
-  },
-];
-
 
 export default ChatList;

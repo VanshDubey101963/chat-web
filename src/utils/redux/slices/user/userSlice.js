@@ -13,6 +13,7 @@ const initialState = {
     usersStatus: 'idle',
     requestsStatus: 'idle',
     currentUserStatus: 'idle',
+    currentUserIDStatus: 'idle',
     error: null
 }
 
@@ -22,7 +23,7 @@ export const fetchCurrentUser = createAsyncThunk('users/fetchCurrentUser',
         try {
             const response = await fetch(`${url}/users/fetchCurrentUser`, {
                 method: 'GET',
-                headers:{
+                headers: {
                     'Authorization': `Bearer ${userID}`
                 }
             })
@@ -36,12 +37,35 @@ export const fetchCurrentUser = createAsyncThunk('users/fetchCurrentUser',
     }
 )
 
+export const fetchCurrentUserID = createAsyncThunk('users/fetchCurrentUserID',
+    async (_, thunkAPI) => {
+        const token = localStorage.getItem('token');
+
+        if (!token) return;
+
+        try {
+            const response = await fetch(`${url}/signin/protectedData`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            return data.userID;
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message)
+        }
+    }
+)
+
 export const fetchUsers = createAsyncThunk('users/fetchUsers',
     async (userID, thunkAPI) => {
         try {
             const response = await fetch(`${url}/users/fetchUsers`, {
                 method: 'GET',
-                headers:{
+                headers: {
                     'Authorization': `Bearer ${userID}`
                 }
             })
@@ -59,7 +83,7 @@ export const fetchFriendRequests = createAsyncThunk('users/fetchFriendRequests',
         try {
             const response = await fetch(`${url}/users/fetchRequests`, {
                 method: 'GET',
-                headers:{
+                headers: {
                     'Authorization': `Bearer ${userID}`
                 }
             })
@@ -79,6 +103,20 @@ export const userSlice = createSlice({
     reducers: {
         setCurrentUserID: (state, action) => {
             state.userID = action.payload;
+        },
+        setOnlineFriend: (state, action) => {
+            state.friends.forEach((friend, index) => {
+                if (friend._id == action.payload._id) {
+                    state.friends[index].isOnline = true
+                }
+            })
+        },
+        setOfflineFriend: (state, action) => {
+            state.friends.forEach((friend, index) => {
+                if (friend._id == action.payload._id) {
+                    state.friends[index].isOnline = false
+                }
+            })
         }
     },
     extraReducers: (builder) => {
@@ -90,9 +128,23 @@ export const userSlice = createSlice({
             .addCase(fetchUsers.pending, (state) => {
                 state.usersStatus = 'pending'
             })
-            .addCase(fetchUsers.rejected, (state,action) => {
+            .addCase(fetchUsers.rejected, (state, action) => {
                 state.usersStatus = 'failed',
                     state.error = action.payload
+            })
+
+        builder
+            .addCase(fetchCurrentUserID.fulfilled, (state, action) => {
+                state.currentUserIDStatus = 'fulfilled'
+                state.userID = action.payload?._id[0]._id
+            })
+            .addCase(fetchCurrentUserID.pending, (state) => {
+                state.currentUserIDStatus = 'pending'
+            })
+            .addCase(fetchCurrentUserID.rejected, (state, action) => {
+                state.currentUserIDStatus = 'failed'
+                state.error = action.payload
+                state.userID = null
             })
 
         builder
@@ -103,7 +155,7 @@ export const userSlice = createSlice({
             .addCase(fetchFriendRequests.pending, (state) => {
                 state.requestsStatus = 'pending'
             })
-            .addCase(fetchFriendRequests.rejected, (state,action) => {
+            .addCase(fetchFriendRequests.rejected, (state, action) => {
                 state.requestsStatus = 'failed',
                     state.error = action.payload
             })
@@ -120,12 +172,12 @@ export const userSlice = createSlice({
             .addCase(fetchCurrentUser.pending, (state) => {
                 state.currentUserStatus = 'pending'
             })
-            .addCase(fetchCurrentUser.rejected, (state,action) => {
+            .addCase(fetchCurrentUser.rejected, (state, action) => {
                 state.currentUserStatus = 'failed',
                     state.error = action.payload
             })
     }
 })
 
-export const { setCurrentUserID } = userSlice.actions;
+export const { setCurrentUserID, setOfflineFriend, setOnlineFriend } = userSlice.actions;
 export default userSlice.reducer;

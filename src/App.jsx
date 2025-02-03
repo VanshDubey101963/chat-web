@@ -3,40 +3,32 @@ import Login from "./components/Login";
 import Chat from "./components/chats/Chat";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { isUser } from "./api/userApi";
 import { useEffect, useState } from "react";
-import { setPage } from "./utils/redux/slices/page/pageSlice";
-import { setCurrentUserID } from "./utils/redux/slices/user/userSlice";
-import { SocketProvider } from "./utils/sockets/socket"
+import {
+  fetchCurrentUserID,
+  setCurrentUserID,
+} from "./utils/redux/slices/user/userSlice";
+import { SocketProvider } from "./utils/sockets/socket";
 
 function App() {
   const theme = useTheme();
-  const page = useSelector((state) => state.page.currPage);
   const dispatch = useDispatch();
-  const userID = useSelector((state) => state.user.userID)
+  const { userID, currentUserIDStatus } = useSelector((state) => state.user);
 
-  async function getPage() {
-    const user = await isUser();
-    if (user?.ok) {
-      dispatch(setPage("chat"));
-      dispatch(setCurrentUserID(user.userID._id[0]._id));
+  useEffect(() => {
+    if (!userID && currentUserIDStatus == "idle") {
+      dispatch(fetchCurrentUserID());
     }
-  }
+  }, [currentUserIDStatus]);
 
-  useEffect( () => {
-      getPage()
-    }, []);
-
-  switch (page) {
-    case "chat":
-      return ( 
-        <SocketProvider userID={userID} >
-            <Chat theme={theme} userID={userID} />
-        </SocketProvider>
+  if (!userID) return <Login />;
+  if (currentUserIDStatus === "pending") return <p>loading.....</p>;
+  if (currentUserIDStatus === "fulfilled")
+    return (
+      <SocketProvider userID={userID}>
+        <Chat theme={theme} />
+      </SocketProvider>
     );
-    default:
-      return <Login />;
-  }
 }
 
 export default App;
