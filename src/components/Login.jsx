@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../utils/redux/slices/page/pageSlice";
 import { toastError, toastInfo, toastSuccess } from "../utils/toasts/toast";
+import { fetchCurrentUserID } from "../utils/redux/slices/user/userSlice";
 
 const Login = () => {
   const page = useSelector((state) => state.page.currPage);
@@ -270,6 +271,7 @@ const SignIn = () => {
 
       if (data.ok) {
         dispatch(setPage("chat"));
+        dispatch(fetchCurrentUserID(data.userID))
       } else {
         toastError("Try Login Again");
       }

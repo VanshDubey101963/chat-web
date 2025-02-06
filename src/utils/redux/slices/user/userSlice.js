@@ -8,6 +8,13 @@ const initialState = {
     email: '',
     avatar: '',
     friends: [],
+    callHistory: [{
+        id: "xyz",
+        username: "vansh",
+        avatar: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Favatar_6858504&psig=AOvVaw1NHOSGvdgqUUdgTzlDU6Zb&ust=1738673930754000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCSiqHHp4sDFQAAAAAdAAAAABAE",
+        type: "voice",
+        timestamp: "2024-11-11"
+    }],
     friendRequests: [],
     users: [],
     usersStatus: 'idle',
@@ -52,6 +59,7 @@ export const fetchCurrentUserID = createAsyncThunk('users/fetchCurrentUserID',
             });
 
             const data = await response.json();
+            console.log("from thunk : ", data)
             return data.userID;
 
         } catch (error) {

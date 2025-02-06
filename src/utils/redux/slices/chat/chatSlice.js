@@ -14,6 +14,7 @@ export const chatSlice = createSlice({
     initialState,
     reducers: {
         setChatNavbar: (state, action) => {
+            console.log("reached here")
             state.username = action.payload.username
             state.avatar = action.payload.avatar
             state.isOnline = action.payload.isOnline

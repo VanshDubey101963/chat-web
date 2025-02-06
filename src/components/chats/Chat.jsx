@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import ChatBox from "./ChatBox";
-import ChatList from "./ChatList";
+import ChatList, { CallList , GroupList } from "./ChatList";
 import { Stack, Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +22,7 @@ const Chat = ({ theme }) => {
   const { userID, currentUserStatus, usersStatus } = useSelector(
     (state) => state.user
   );
-  const { chatIndex } = useSelector((state) => state.page);
+  const { chatIndex, navbarIndex } = useSelector((state) => state.page);
 
   useEffect(() => {
     dispatch(fetchCurrentUser(userID));
@@ -97,10 +97,13 @@ const Chat = ({ theme }) => {
       <Stack direction={"row"} height={"98vh"} width={"98vw"} gap={0.1}>
         <ToastContainer />
         <Navbar />
-        <ChatList theme={theme} />
+        {navbarIndex == 0 && <ChatList theme={theme} />}
+        {navbarIndex == 1 && <GroupList/>}
+        {navbarIndex == 2 && <CallList />}
         <Divider sx={{ bgcolor: "#767B82" }} />
-        {chatIndex != -1 && <ChatBox />}
-        {chatIndex == -1 && (
+        {chatIndex !== -1 ? (
+          <ChatBox />
+        ) : (
           <div
             style={{
               width: "100%",
@@ -112,10 +115,10 @@ const Chat = ({ theme }) => {
               backgroundColor: "#FFFFFF",
             }}
           >
-            <img src="src\assets\illustration.png" height={400} width={400} />
+            <img src="src/assets/illustration.png" height={400} width={400} />
             <p
-              color="#2C3E50"
               style={{
+                color: "#2C3E50",
                 fontFamily: "Merriweather",
                 fontWeight: 550,
               }}

@@ -16,19 +16,24 @@ function App() {
   const { userID, currentUserIDStatus } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (!userID && currentUserIDStatus == "idle") {
+    console.log("Redux state changed1:", { userID, currentUserIDStatus });
+    if (currentUserIDStatus == "idle" && !userID ) {
       dispatch(fetchCurrentUserID());
     }
+    console.log("Redux state changed2:", { userID, currentUserIDStatus });
   }, [currentUserIDStatus]);
 
-  if (!userID) return <Login />;
-  if (currentUserIDStatus === "pending") return <p>loading.....</p>;
-  if (currentUserIDStatus === "fulfilled")
+  if (currentUserIDStatus === "pending") return <p>Loading...</p>;
+
+  if (userID) {
     return (
       <SocketProvider userID={userID}>
         <Chat theme={theme} />
       </SocketProvider>
     );
+  }
+
+  return <Login />;
 }
 
 export default App;

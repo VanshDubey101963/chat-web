@@ -20,7 +20,7 @@ const FriendsDialog = ({ open, onClose }) => {
   const { friendRequests, users, userID, currentUserIDStatus } = useSelector(
     (state) => state.user
   );
-  const handleTabChange = (newValue) => setTabIndex(newValue);
+  const handleTabChange = (event , newValue) => setTabIndex(newValue);
   const handleSearchChange = (event) => setSearch(event.target.value);
 
   const filteredExploreUsers = users?.filter((user) =>

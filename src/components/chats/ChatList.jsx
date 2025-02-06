@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Box, Avatar, Stack, List, IconButton } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Stack,
+  List,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { OutlinedInput, InputAdornment, Button } from "@mui/material";
+import {
+  OutlinedInput,
+  InputAdornment,
+  Button,
+  ListItem,
+  ListItemAvatar,
+} from "@mui/material";
 import FriendsDialog from "./dialogs/FriendsDialog";
 import {
   MagnifyingGlass,
   ArchiveBox,
   FinnTheHuman,
   List as List1,
+  UserPlus,
 } from "phosphor-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatNavbar } from "../../utils/redux/slices/chat/chatSlice";
@@ -25,7 +39,7 @@ const ChatList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(null);
   const dispatch = useDispatch();
 
-  const handleListItemClick = (props) => {
+  const handleListItemClick = (event, props) => {
     setSelectedIndex(props.index);
     dispatch(setChatNavbar({ ...props }));
     dispatch(setChatIndex(props.index));
@@ -99,6 +113,18 @@ const ChatList = () => {
         </Button>
         <Divider component={"h1"} />
         <List>
+        {friends.length == 0 && 
+            <p
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                fontFamily: "poppins",
+                fontSize: 11.5,
+              }}
+            >
+              Make Some Friends To Chat
+            </p>
+            }
           {friends.map((el) => (
             <Chats
               key={el._id}
@@ -178,3 +204,200 @@ const Chats = (props) => {
 };
 
 export default ChatList;
+
+export const CallList = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
+
+  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const dispatch = useDispatch();
+
+  const handleListItemClick = (event, props) => {
+    setSelectedIndex(props.index);
+    dispatch(setChatNavbar({ ...props }));
+    dispatch(setChatIndex(props.index));
+  };
+
+  useEffect(() => {
+      dispatch(setChatIndex(-1))
+  }, [])
+
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#F8F9FF",
+        width: "350px",
+        borderRadius: 1.5,
+        outline: "none",
+        padding: 3,
+      }}
+    >
+      <Stack spacing={2}>
+        <Stack justifyContent={"space-between"} direction={"row"}>
+          <h1>Calls</h1>
+          <IconButton onClick={handleOpenDialog} sx={{ borderRadius: "50%" }}>
+            <img src="src\assets\phone-list.svg" alt="" />
+          </IconButton>
+        </Stack>
+
+        <FriendsDialog open={openDialog} onClose={handleCloseDialog} />
+
+        <OutlinedInput
+          sx={{
+            borderRadius: 3.5,
+            height: 45,
+            backgroundColor: "#E6EFFC",
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+            "& .MuiOutlinedInput-input::placeholder": {
+              color: "#0472F4",
+              opacity: 0.75,
+            },
+          }}
+          placeholder="Search"
+          id="outlined-adornment-weight"
+          startAdornment={
+            <InputAdornment position="start">
+              <MagnifyingGlass size={20} color="#0472F4" />
+            </InputAdornment>
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton>
+                <List1 size={20} color="black" opacity={0.75} />
+              </IconButton>
+            </InputAdornment>
+          }
+          inputProps={{
+            "aria-label": "weight",
+          }}
+        />
+        <Divider component={"h1"} />
+        <List sx={{ height: "100%" }}>
+          {callData.length == 0 && (
+            <p
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                fontFamily: "poppins",
+                fontSize: 13.5,
+              }}
+            >
+              No Call History
+            </p>
+          )}
+        </List>
+      </Stack>
+    </Box>
+  );
+};
+
+export const GroupList = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
+
+  const [selectedIndex, setSelectedIndex] = React.useState(null);
+  const dispatch = useDispatch();
+
+  const handleListItemClick = (event, props) => {
+    setSelectedIndex(props.index);
+    dispatch(setChatNavbar({ ...props }));
+    dispatch(setChatIndex(props.index));
+  };
+
+  useEffect(() => {
+    dispatch(setChatIndex(-1))
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        backgroundColor: "#F8F9FF",
+        width: "350px",
+        borderRadius: 1.5,
+        outline: "none",
+        padding: 3,
+      }}
+    >
+      <Stack spacing={2}>
+        <Stack justifyContent={"space-between"} direction={"row"}>
+          <h1>Groups</h1>
+          <IconButton onClick={handleOpenDialog}>
+          <UserPlus />
+          </IconButton>
+        </Stack>
+
+        <FriendsDialog open={openDialog} onClose={handleCloseDialog} />
+
+        <OutlinedInput
+          sx={{
+            borderRadius: 3.5,
+            height: 45,
+            backgroundColor: "#E6EFFC",
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+            "& .MuiOutlinedInput-input::placeholder": {
+              color: "#0472F4",
+              opacity: 0.75,
+            },
+          }}
+          placeholder="Search"
+          id="outlined-adornment-weight"
+          startAdornment={
+            <InputAdornment position="start">
+              <MagnifyingGlass size={20} color="#0472F4" />
+            </InputAdornment>
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton>
+                <List1 size={20} color="black" opacity={0.75} />
+              </IconButton>
+            </InputAdornment>
+          }
+          inputProps={{
+            "aria-label": "weight",
+          }}
+        />
+
+        <Button
+          variant="text"
+          sx={{
+            p: 0.5,
+            width: "fit-content",
+            textTransform: "none",
+            paddingLeft: 2,
+          }}
+          startIcon={<ArchiveBox color="black" />}
+        >
+          Archived
+        </Button>
+        <Divider component={"h1"} />
+        <List>
+        {groupData.length == 0 && 
+            <p
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                fontFamily: "poppins",
+                fontSize: 13.5,
+              }}
+            >
+              No Group Found
+            </p>
+            }
+          
+        </List>
+      </Stack>
+    </Box>
+  );
+};
+
+const callData = [];
+const groupData = [];
