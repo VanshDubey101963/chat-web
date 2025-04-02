@@ -59,7 +59,6 @@ export const fetchCurrentUserID = createAsyncThunk('users/fetchCurrentUserID',
             });
 
             const data = await response.json();
-            console.log("from thunk : ", data)
             return data.userID;
 
         } catch (error) {

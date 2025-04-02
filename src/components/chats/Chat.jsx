@@ -59,7 +59,6 @@ const Chat = ({ theme }) => {
 
     const handleOnlineFriend = (data) => {
       dispatch(setOnlineFriend({ ...data }));
-      console.log("dispatch online called");
       dispatch(
         setSelectedChatNavbarIsOnline({ _id: data._id, isOnline: true })
       );
@@ -67,7 +66,6 @@ const Chat = ({ theme }) => {
 
     const handleOfflineFriend = (data) => {
       dispatch(setOfflineFriend({ ...data }));
-      console.log("dispatch offline called");
       dispatch(
         setSelectedChatNavbarIsOnline({ _id: data._id, isOnline: false })
       );

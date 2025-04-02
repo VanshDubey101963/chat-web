@@ -16,11 +16,9 @@ function App() {
   const { userID, currentUserIDStatus } = useSelector((state) => state.user);
 
   useEffect(() => {
-    console.log("Redux state changed1:", { userID, currentUserIDStatus });
     if (currentUserIDStatus == "idle" && !userID ) {
       dispatch(fetchCurrentUserID());
     }
-    console.log("Redux state changed2:", { userID, currentUserIDStatus });
   }, [currentUserIDStatus]);
 
   if (currentUserIDStatus === "pending") return <p>Loading...</p>;
